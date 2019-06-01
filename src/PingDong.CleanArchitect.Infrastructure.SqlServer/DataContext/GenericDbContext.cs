@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PingDong.CleanArchitect.Core;
-using PingDong.CleanArchitect.Infrastructure.EntityConfigurations;
-using PingDong.CleanArchitect.Infrastructure.Idempotency;
+using PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency;
 
 namespace PingDong.CleanArchitect.Infrastructure.SqlServer
 {
