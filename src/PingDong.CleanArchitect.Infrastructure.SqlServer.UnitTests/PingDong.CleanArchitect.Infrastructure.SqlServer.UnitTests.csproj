@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PingDong.CleanArchitect.Infrastructure\PingDong.CleanArchitect.Infrastructure.csproj" />
+    <ProjectReference Include="..\PingDong.CleanArchitect.Infrastructure.SqlServer\PingDong.CleanArchitect.Infrastructure.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>
