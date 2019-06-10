@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2C84BD88-F9A5-4908-AC7D-745191DD9300}") = "PingDong.CleanArchitect.Infrastructure.SqlServer", "src\PingDong.CleanArchitect.Infrastructure.SqlServer\PingDong.CleanArchitect.Infrastructure.SqlServer.csproj", "{373DD100-720D-4229-BE5B-C4B1FDFA1EE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PingDong.CleanArchitect.Infrastructure.SqlServer", "src\PingDong.CleanArchitect.Infrastructure.SqlServer\PingDong.CleanArchitect.Infrastructure.SqlServer.csproj", "{373DD100-720D-4229-BE5B-C4B1FDFA1EE1}"
 EndProject
-Project("{C51DB789-F630-4105-8686-E5F74EE20CF7}") = "PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests", "src\PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests\PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests.csproj", "{416A6A5B-408A-4C52-9D83-9957E3E8F9D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests", "src\PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests\PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests.csproj", "{416A6A5B-408A-4C52-9D83-9957E3E8F9D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
