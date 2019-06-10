@@ -8,10 +8,10 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
 {
     public class GenericRepository<TId, T> : IRepository<TId, T> where T : Entity<TId>, IAggregateRoot 
     {
-        private readonly GenericDbContext _context;
+        private readonly GenericDbContext<TId> _context;
         private readonly IEnumerable<IValidator<T>> _validators;
 
-        public GenericRepository(GenericDbContext context, IEnumerable<IValidator<T>> validators)
+        public GenericRepository(GenericDbContext<TId> context, IEnumerable<IValidator<T>> validators)
         {
             _context = context;
             _validators = validators;
@@ -31,15 +31,17 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
+            if (!entity.IsTransient())
+                return;
+
             _validators.Validate(entity);
 
-            if (entity.IsTransient())
-                await _context.Set<T>().AddAsync(entity).ConfigureAwait(false);
+            await _context.Set<T>().AddAsync(entity).ConfigureAwait(false);
         }
         
         public async Task RemoveAsync(TId id)
         {
-            if(EqualityComparer<TId>.Default.Equals(id, default(TId))) 
+            if(EqualityComparer<TId>.Default.Equals(id, default)) 
                 throw new ArgumentNullException(nameof(id));
 
             var entity = await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
@@ -49,14 +51,21 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
             _context.Set<T>().Remove(entity);
         }
         
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
+
+            if (entity.IsTransient())
+                throw new ArgumentException(nameof(entity));
+            
+            var existing = await _context.Set<T>().FindAsync(entity.Id).ConfigureAwait(false);
+            if (existing == null)
+                throw new ArgumentOutOfRangeException(nameof(entity));
+
+            _validators.Validate(entity);
             
             _context.Update(entity);
-
-            return Task.CompletedTask;
         }
 
         #endregion

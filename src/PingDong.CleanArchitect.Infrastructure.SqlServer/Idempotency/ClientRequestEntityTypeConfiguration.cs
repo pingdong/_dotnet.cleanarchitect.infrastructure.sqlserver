@@ -4,7 +4,7 @@ using PingDong.CleanArchitect.Service;
 
 namespace PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency
 {
-    internal class ClientRequestEntityTypeConfiguration : IEntityTypeConfiguration<ClientRequest>
+    internal class ClientRequestEntityTypeConfiguration<T> : IEntityTypeConfiguration<ClientRequest<T>>
     {
         private readonly string _defaultSchema;
         public ClientRequestEntityTypeConfiguration(string defaultSchema)
@@ -12,7 +12,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency
             _defaultSchema = defaultSchema;
         }
 
-        public void Configure(EntityTypeBuilder<ClientRequest> requestConfiguration)
+        public void Configure(EntityTypeBuilder<ClientRequest<T>> requestConfiguration)
         {
             requestConfiguration.ToTable("RequestsManager", _defaultSchema);
 

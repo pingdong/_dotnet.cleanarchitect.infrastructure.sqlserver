@@ -6,7 +6,11 @@ using PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency;
 
 namespace PingDong.CleanArchitect.Infrastructure.SqlServer
 {
-    public class InfrastructureRegistrar
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TId">The type of Id</typeparam>
+    public class InfrastructureRegistrar<TId>
     {
         private readonly IConfiguration _configuration;
 
@@ -29,13 +33,13 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
         public string ConnectionStringKey { get; set; } = "Default";
 
         /// <summary>
-        /// If user need full control the connection or even use a database other than mssqlserver,
+        /// If user need full control the connection or even use a database other than MS SQL Server,
         /// user has to set options by override the method
         /// </summary>
         /// <param name="options">DbContextOptionsBuilder</param>
         public virtual void BuildDbContext(DbContextOptionsBuilder options)
         {
-            var builder = options.UseSqlServer(_configuration.GetConnectionString(ConnectionStringKey),
+            options.UseSqlServer(_configuration.GetConnectionString(ConnectionStringKey),
                 sqlServerOptionsAction: sqlOptions =>
                 {
                     sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
@@ -54,7 +58,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
         public virtual void Register(IServiceCollection services)
         {
             // Register DbContext
-            services.AddDbContext<GenericDbContext>(BuildDbContext);
+            services.AddDbContext<GenericDbContext<TId>>(BuildDbContext);
 
             // Register all repositories
             RegisterGenericRepository(services);

@@ -8,7 +8,7 @@ using PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency;
 
 namespace PingDong.CleanArchitect.Infrastructure.SqlServer
 {
-    public class GenericDbContext : DbContext, IUnitOfWork
+    public class GenericDbContext<TId> : DbContext, IUnitOfWork
     {
         private readonly IMediator _mediator;
         
@@ -19,9 +19,10 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
-            await _mediator.DispatchDomainEventsAsync(this).ConfigureAwait(false);
+            if (_mediator != null)
+                await _mediator.DispatchDomainEventsAsync<GenericDbContext<TId>, TId>(this).ConfigureAwait(false);
 
             await SaveChangesAsync(cancellationToken);
 
@@ -32,7 +33,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration(RequestsManagerTable.DefaultSchema));
+            modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration<TId>(RequestsManagerTable.DefaultSchema));
         }
     }
 }
