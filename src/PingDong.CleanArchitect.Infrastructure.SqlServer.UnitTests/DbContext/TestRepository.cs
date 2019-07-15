@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using PingDong.CleanArchitect.Core;
 
-namespace PingDong.CleanArchitect.Infrastructure.SqlServer
+namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
 {
-    public class GenericRepository<TId, T> : IRepository<TId, T> where T : Entity<TId>, IAggregateRoot 
+    internal class TestRepository<TId, T> : IRepository<TId, T> where T : Entity<TId>, IAggregateRoot 
     {
-        private readonly GenericDbContext<TId> _context;
+        private readonly GenericDbContext<Guid> _context;
         private readonly IEnumerable<IValidator<T>> _validators;
 
-        public GenericRepository(GenericDbContext<TId> context, IEnumerable<IValidator<T>> validators)
+        public TestRepository(GenericDbContext<Guid> context, IEnumerable<IValidator<T>> validators)
         {
             _context = context;
             _validators = validators;
@@ -24,6 +25,11 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
         public async Task<T> FindByIdAsync(TId id)
         {
             return await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
+        }
+
+        public async Task<IList<T>> ListAsync()
+        {
+            return await _context.Set<T>().ToListAsync().ConfigureAwait(false);
         }
         
         public async Task AddAsync(T entity)
