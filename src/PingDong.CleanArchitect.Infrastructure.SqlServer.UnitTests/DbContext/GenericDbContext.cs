@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency;
 using PingDong.CleanArchitect.Service;
 using Xunit;
 
-namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests.GenericRepository
+namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
 {
     public class GenericDbContextTests
     {
@@ -68,7 +69,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests.GenericRepo
             mock.Verify(m => m.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
-        private async void ExecuteTestCase(IMediator mediator, Func<GenericRepository<Guid, ClientRequest<Guid>>, TestDbContext, Task> action)
+        private async void ExecuteTestCase(IMediator mediator, Func<TestRepository<Guid, ClientRequest<Guid>>, TestDbContext, Task> action)
         {
             var options = new DbContextOptionsBuilder<GenericDbContext<Guid>>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -78,7 +79,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests.GenericRepo
             {
                 await context.Database.EnsureCreatedAsync();
 
-                var repository = new GenericRepository<Guid, ClientRequest<Guid>>(context, null);
+                var repository = new TestRepository<Guid, ClientRequest<Guid>>(context, null);
 
                 await action(repository, context);
             }
@@ -93,6 +94,14 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests.GenericRepo
     internal class TestDbContext : GenericDbContext<Guid>
     {
         public TestDbContext(DbContextOptions options, IMediator mediator) : base(options, mediator) {}
+        
+        public DbSet<ClientRequest<Guid>> Requests { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Client Requests
+            modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration<Guid>());
+        }  
 
         public bool IsSaveChangesTriggered { get; private set; }
 
