@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="PingDong.CleanArchitect.Core" Version="0.0.1.8" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -18,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\src\PingDong.CleanArchitect.Core\PingDong.CleanArchitect.Core.csproj" />
     <ProjectReference Include="..\PingDong.CleanArchitect.Infrastructure.SqlServer\PingDong.CleanArchitect.Infrastructure.SqlServer.csproj" />
   </ItemGroup>
 
