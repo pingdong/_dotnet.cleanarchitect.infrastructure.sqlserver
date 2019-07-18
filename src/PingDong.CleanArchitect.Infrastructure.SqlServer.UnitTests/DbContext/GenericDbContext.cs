@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency;
+using PingDong.CleanArchitect.Core;
 using PingDong.CleanArchitect.Service;
 using Xunit;
 
@@ -86,7 +86,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
         }
     }
 
-    internal class TestDomainEvent : INotification
+    internal class TestDomainEvent : DomainEvent
     {
 
     }

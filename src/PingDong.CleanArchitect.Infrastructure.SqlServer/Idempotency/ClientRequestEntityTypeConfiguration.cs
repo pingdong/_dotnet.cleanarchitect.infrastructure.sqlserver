@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PingDong.CleanArchitect.Service;
 
-namespace PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency
+namespace PingDong.CleanArchitect.Infrastructure.SqlServer
 {
     public class ClientRequestEntityTypeConfiguration<T> : IEntityTypeConfiguration<ClientRequest<T>>
     {
@@ -15,13 +15,16 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.Idempotency
             _tableName = tableName;
         }
 
-        public void Configure(EntityTypeBuilder<ClientRequest<T>> requestConfiguration)
+        public void Configure(EntityTypeBuilder<ClientRequest<T>> configuration)
         {
-            requestConfiguration.ToTable(_tableName, _schema);
+            configuration.ToTable(_tableName, _schema);
 
-            requestConfiguration.HasKey(cr => cr.Id);
-            requestConfiguration.Property(cr => cr.Name).IsRequired();
-            requestConfiguration.Property(cr => cr.Time).IsRequired();
+            configuration.HasKey(cr => cr.Id);
+            configuration.Property(cr => cr.Name).IsRequired();
+            configuration.Property(cr => cr.Time).IsRequired();
+            configuration.Ignore(cr => cr.TenantId);
+            configuration.Ignore(cr => cr.CorrelationId);
+            configuration.Ignore(cr => cr.DomainEvents);
         }
     }
 }
