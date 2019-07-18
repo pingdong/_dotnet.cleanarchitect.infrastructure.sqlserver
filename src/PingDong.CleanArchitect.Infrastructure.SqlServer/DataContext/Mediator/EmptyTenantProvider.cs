@@ -5,11 +5,11 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
 {
     public partial class GenericDbContext
     {
-        public class EmptyTenantProvider : ITenantProvider
+        public class EmptyTenantProvider<T> : ITenantProvider<T>
         {
-            public Guid GetTenantId()
+            public T GetTenantId()
             {
-                return Guid.NewGuid();
+                return default;
             }
         }
     }
