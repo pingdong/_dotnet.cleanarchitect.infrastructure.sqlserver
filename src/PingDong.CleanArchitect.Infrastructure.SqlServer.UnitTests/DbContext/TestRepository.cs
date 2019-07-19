@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using PingDong.CleanArchitect.Core;
+using PingDong.CleanArchitect.Core.Validation;
 
 namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
 {
