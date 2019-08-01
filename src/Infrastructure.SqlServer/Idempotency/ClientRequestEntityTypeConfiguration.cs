@@ -22,9 +22,6 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
             configuration.HasKey(cr => cr.Id);
             configuration.Property(cr => cr.Name).IsRequired();
             configuration.Property(cr => cr.Time).IsRequired();
-            configuration.Ignore(cr => cr.TenantId);
-            configuration.Ignore(cr => cr.CorrelationId);
-            configuration.Ignore(cr => cr.DomainEvents);
         }
     }
 }
