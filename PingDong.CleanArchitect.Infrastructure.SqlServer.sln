@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.28922.388
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PingDong.CleanArchitect.Infrastructure.SqlServer", "src\PingDong.CleanArchitect.Infrastructure.SqlServer\PingDong.CleanArchitect.Infrastructure.SqlServer.csproj", "{373DD100-720D-4229-BE5B-C4B1FDFA1EE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitect.Infrastructure.SqlServer", "src\Infrastructure.SqlServer\CleanArchitect.Infrastructure.SqlServer.csproj", "{869EA187-ADB5-4F29-9615-3003730CE618}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests", "src\PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests\PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests.csproj", "{416A6A5B-408A-4C52-9D83-9957E3E8F9D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitect.Infrastructure.SqlServer.UnitTests", "src\Infrastructure.SqlServer.UnitTests\CleanArchitect.Infrastructure.SqlServer.UnitTests.csproj", "{D1E6F546-440C-4FB8-B054-CD06DE47346C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{373DD100-720D-4229-BE5B-C4B1FDFA1EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{373DD100-720D-4229-BE5B-C4B1FDFA1EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{373DD100-720D-4229-BE5B-C4B1FDFA1EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{373DD100-720D-4229-BE5B-C4B1FDFA1EE1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{416A6A5B-408A-4C52-9D83-9957E3E8F9D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{416A6A5B-408A-4C52-9D83-9957E3E8F9D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{416A6A5B-408A-4C52-9D83-9957E3E8F9D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{416A6A5B-408A-4C52-9D83-9957E3E8F9D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{869EA187-ADB5-4F29-9615-3003730CE618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{869EA187-ADB5-4F29-9615-3003730CE618}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{869EA187-ADB5-4F29-9615-3003730CE618}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{869EA187-ADB5-4F29-9615-3003730CE618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E6F546-440C-4FB8-B054-CD06DE47346C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E6F546-440C-4FB8-B054-CD06DE47346C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E6F546-440C-4FB8-B054-CD06DE47346C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E6F546-440C-4FB8-B054-CD06DE47346C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DA92B57D-7951-4895-A2C3-C21C045F30DC}
+		SolutionGuid = {865A7748-F5D4-49F1-8594-5ECF328B3FC6}
 	EndGlobalSection
 EndGlobal

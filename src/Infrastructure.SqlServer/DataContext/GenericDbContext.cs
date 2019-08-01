@@ -7,7 +7,7 @@ using PingDong.CleanArchitect.Core;
 
 namespace PingDong.CleanArchitect.Infrastructure.SqlServer
 {
-    public partial class GenericDbContext<TId> : DbContext, IUnitOfWork
+    public class GenericDbContext<TId> : DbContext, IUnitOfWork
     {
         private readonly IMediator _mediator;
         
