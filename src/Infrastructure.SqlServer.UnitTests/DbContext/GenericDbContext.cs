@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Moq;
 using PingDong.CleanArchitect.Core;
 using PingDong.CleanArchitect.Service;
@@ -37,10 +38,10 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
             
             ExecuteTestCase(mock.Object, async (repository, dbContext) =>
             {
-                var request = new ClientRequest<Guid>("Test", DateTime.Now);
-                request.AddDomainEvent(new TestDomainEvent());
+                var entity = new TestEntity { Name = "Test" };
+                entity.AddDomainEvent(new TestDomainEvent());
 
-                await repository.AddAsync(request);
+                await repository.AddAsync(entity);
                 await repository.UnitOfWork.SaveEntitiesAsync();
 
                 Assert.True(dbContext.IsSaveChangesTriggered);
@@ -58,9 +59,9 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
 
             ExecuteTestCase(mock.Object, async (repository, dbContext) =>
             {
-                var request = new ClientRequest<Guid>("Test", DateTime.Now);
-
-                await repository.AddAsync(request);
+                var entity = new TestEntity { Name = "Test" };
+                
+                await repository.AddAsync(entity);
                 await repository.UnitOfWork.SaveEntitiesAsync();
 
                 Assert.True(dbContext.IsSaveChangesTriggered);
@@ -69,7 +70,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
             mock.Verify(m => m.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
-        private async void ExecuteTestCase(IMediator mediator, Func<TestRepository<Guid, ClientRequest<Guid>>, TestDbContext, Task> action)
+        private async void ExecuteTestCase(IMediator mediator, Func<TestRepository<Guid, TestEntity>, TestDbContext, Task> action)
         {
             var options = new DbContextOptionsBuilder<GenericDbContext<Guid>>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -79,7 +80,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
             {
                 await context.Database.EnsureCreatedAsync();
 
-                var repository = new TestRepository<Guid, ClientRequest<Guid>>(context, null);
+                var repository = new TestRepository<Guid, TestEntity>(context, null);
 
                 await action(repository, context);
             }
@@ -95,12 +96,12 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
     {
         public TestDbContext(DbContextOptions options, IMediator mediator) : base(options, mediator) {}
         
-        public DbSet<ClientRequest<Guid>> Requests { get; set; }
+        public DbSet<TestEntity> Entities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Client Requests
-            modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration<Guid>());
+            modelBuilder.ApplyConfiguration(new TestEntityTypeConfiguration());
         }  
 
         public bool IsSaveChangesTriggered { get; private set; }
@@ -110,6 +111,32 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
             IsSaveChangesTriggered = true;
 
             return base.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    internal class TestEntity : Entity<Guid>, IAggregateRoot
+    {
+        public string Name { get; set; }
+    }
+    internal class TestEntityTypeConfiguration : IEntityTypeConfiguration<TestEntity>
+    {
+        private readonly string _schema = "dbo";
+        private readonly string _tableName = "entities";
+
+        public void Configure(EntityTypeBuilder<TestEntity> configuration)
+        {
+            configuration.ToTable(_tableName, _schema);
+
+            configuration.HasKey(cr => cr.Id);
+
+            configuration.Property(b => b.Id)
+                            .HasColumnType("uniqueidentifier")
+                            .IsRequired();
+            configuration.Property(cr => cr.Name)
+                            .HasColumnType("nvarchar(40)")
+                            .IsRequired();
+
+            configuration.Ignore(c => c.DomainEvents);
         }
     }
 }

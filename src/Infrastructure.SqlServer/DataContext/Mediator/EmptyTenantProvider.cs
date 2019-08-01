@@ -1,5 +1,4 @@
-﻿using System;
-using PingDong.CleanArchitect.Service;
+﻿using PingDong.CleanArchitect.Service;
 
 namespace PingDong.CleanArchitect.Infrastructure.SqlServer
 {
