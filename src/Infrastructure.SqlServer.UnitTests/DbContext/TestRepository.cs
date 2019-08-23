@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +28,16 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
         public async Task<T> FindByIdAsync(TId id)
         {
             return await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
+        }
+
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(predicate);
+        }
+
+        public async Task<IList<T>> WhereAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
         public async Task<IList<T>> ListAsync()
