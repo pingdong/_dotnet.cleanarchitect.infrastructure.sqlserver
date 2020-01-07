@@ -13,6 +13,11 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer
         /// </summary>
         public class EmptyMediator : IMediator
         {
+            public Task<object> Send(object request, CancellationToken cancellationToken = new CancellationToken())
+            {
+                return Task.FromResult(default(object));
+            }
+
             public Task Publish(object notification, CancellationToken cancellationToken = new CancellationToken())
             {
                 return Task.CompletedTask;
