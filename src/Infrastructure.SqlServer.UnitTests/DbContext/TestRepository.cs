@@ -30,6 +30,11 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
             return await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
         }
 
+        public Task<T> FindByIdAsync(TId id, bool throwIfMissing = true)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
         {
             return await _context.Set<T>().FirstOrDefaultAsync(predicate);
@@ -57,7 +62,21 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
 
             await _context.Set<T>().AddAsync(entity).ConfigureAwait(false);
         }
-        
+
+        public async Task AddAsync(IList<T> entities)
+        {
+            if (entities == null)
+                throw new ArgumentNullException(nameof(entities));
+
+            if (!entities.Any())
+                return;
+
+            foreach (var entity in entities)
+            {
+                await AddAsync(entity);
+            }
+        }
+
         public async Task RemoveAsync(TId id)
         {
             if(EqualityComparer<TId>.Default.Equals(id, default)) 
@@ -69,7 +88,21 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
 
             _context.Set<T>().Remove(entity);
         }
-        
+
+        public async Task RemoveAsync(IList<TId> ids)
+        {
+            if (ids == null)
+                throw new ArgumentNullException(nameof(ids));
+
+            if (!ids.Any())
+                return;
+
+            foreach (var id in ids)
+            {
+                await RemoveAsync(id);
+            }
+        }
+
         public async Task UpdateAsync(T entity)
         {
             if (entity == null)
@@ -85,6 +118,20 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
             _validators.Validate(entity);
             
             _context.Update(entity);
+        }
+
+        public async Task UpdateAsync(IList<T> entities)
+        {
+            if (entities == null)
+                throw new ArgumentNullException(nameof(entities));
+
+            if (!entities.Any())
+                return;
+
+            foreach (var entity in entities)
+            {
+                await UpdateAsync(entity);
+            }
         }
 
         #endregion
