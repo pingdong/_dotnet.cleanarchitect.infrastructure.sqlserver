@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Moq;
 using PingDong.CleanArchitect.Core;
+using PingDong.CleanArchitect.Service;
 using Xunit;
 
 namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
@@ -69,7 +70,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
             mock.Verify(m => m.Publish(It.IsAny<INotification>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
-        private async void ExecuteTestCase(IMediator mediator, Func<GenericRepository<Guid, TestEntity>, TestDbContext, Task> action)
+        private async void ExecuteTestCase(IMediator mediator, Func<TestRepository<Guid, TestEntity>, TestDbContext, Task> action)
         {
             var options = new DbContextOptionsBuilder<GenericDbContext<Guid>>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -79,7 +80,7 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
             {
                 await context.Database.EnsureCreatedAsync();
 
-                var repository = new GenericRepository<Guid, TestEntity>(context);
+                var repository = new TestRepository<Guid, TestEntity>(context, null);
 
                 await action(repository, context);
             }
@@ -117,7 +118,6 @@ namespace PingDong.CleanArchitect.Infrastructure.SqlServer.UnitTests
     {
         public string Name { get; set; }
     }
-
     internal class TestEntityTypeConfiguration : IEntityTypeConfiguration<TestEntity>
     {
         private readonly string _schema = "dbo";
